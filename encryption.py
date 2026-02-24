@@ -76,8 +76,6 @@ def decrypt_aes(texto_cifrado_hex, nonce_hex, tag_hex, clave):
     return texto_descifrado.decode()
 
 
-    pass
-
 # ==========================================================
 # PASSWORD HASHING (PBKDF2 - SHA256)
 # ==========================================================
