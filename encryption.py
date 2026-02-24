@@ -107,13 +107,27 @@ def hash_password(password):
         hashlib.pbkdf2_hmac(...)
     """
 
-    # TODO: Generar salt aleatoria
-
-    # TODO: Derivar clave usando pbkdf2_hmac
-
-    # TODO: Retornar diccionario con salt y hash en formato hex
-
-    pass
+    # Generar salt aleatoria
+    salt = get_random_bytes(16)
+    
+    # Parámetros de PBKDF2
+    iteraciones = 200000
+    
+    # Derivar clave usando pbkdf2_hmac
+    hash_obj = hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode(),
+        salt,
+        iteraciones
+    )
+    
+    # Retornar diccionario con salt y hash en formato hex
+    return {
+        "algorithm": "pbkdf2_sha256",
+        "iterations": iteraciones,
+        "salt": salt.hex(),
+        "hash": hash_obj.hex()
+    }
 
 
 
@@ -163,8 +177,8 @@ if __name__ == "__main__":
     print("Tag:", tag)
 
     # Cuando implementen decrypt_aes, esto debe funcionar
-    # texto_descifrado = decrypt_aes(texto_cifrado, nonce, tag, clave)
-    # print("Texto descifrado:", texto_descifrado)
+    texto_descifrado = decrypt_aes(texto_cifrado, nonce, tag, clave)
+    print("Texto descifrado:", texto_descifrado)
 
 
     print("\n=== PRUEBA HASH ===")
