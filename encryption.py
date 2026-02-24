@@ -151,13 +151,21 @@ def verify_password(password, stored_data):
         }
     """
 
-    # TODO: Extraer salt e iterations
-
-    # TODO: Recalcular hash
-
-    # TODO: Comparar con compare_digest
-
-    pass
+    # Extraer salt e iterations del diccionario
+    salt = bytes.fromhex(stored_data["salt"])
+    iterations = stored_data["iterations"]
+    stored_hash = stored_data["hash"]
+    
+    # Recalcular hash con la contraseña ingresada
+    calculated_hash = hashlib.pbkdf2_hmac(
+        'sha256',
+        password.encode(),
+        salt,
+        iterations
+    ).hex()
+    
+    # Comparar con compare_digest (protege contra timing attacks)
+    return hmac.compare_digest(calculated_hash, stored_hash)
 
 
 
@@ -184,9 +192,9 @@ if __name__ == "__main__":
     password = "Password123!"
 
     # Cuando implementen hash_password:
-    # pwd_data = hash_password(password)
-    # print("Hash generado:", pwd_data)
+    pwd_data = hash_password(password)
+    print("Hash generado:", pwd_data)
 
     # Cuando implementen verify_password:
-    # print("Verificación correcta:",
-    #       verify_password("Password123!", pwd_data))
+    print("Verificación correcta:",
+    verify_password("Password123!", pwd_data))
