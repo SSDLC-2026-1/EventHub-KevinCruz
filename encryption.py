@@ -56,18 +56,25 @@ def decrypt_aes(texto_cifrado_hex, nonce_hex, tag_hex, clave):
 
     1. Convertir texto_cifrado_hex, nonce_hex y tag_hex a bytes.
     2. Crear el objeto AES usando:
-           AES.new(clave, AES.MODE_EAX, nonce=nonce)
+            AES.new(clave, AES.MODE_EAX, nonce=nonce)
     3. Usar decrypt_and_verify() para validar integridad.
     4. Retornar el texto descifrado como string.
     """
 
-    # TODO: Implementar conversión de hex a bytes
+    # Convertir de hex a bytes
+    texto_cifrado = bytes.fromhex(texto_cifrado_hex)
+    nonce = bytes.fromhex(nonce_hex)
+    tag = bytes.fromhex(tag_hex)
+    
+    # Crear objeto AES con nonce
+    cipher = AES.new(clave, AES.MODE_EAX, nonce=nonce)
+    
+    # Descifrar y verificar integridad
+    texto_descifrado = cipher.decrypt_and_verify(texto_cifrado, tag)
+    
+    # Convertir a string y retornar
+    return texto_descifrado.decode()
 
-    # TODO: Crear objeto AES con nonce
-
-    # TODO: Usar decrypt_and_verify
-
-    # TODO: Convertir resultado a string y retornar
 
     pass
 
